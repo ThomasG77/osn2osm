@@ -52,11 +52,17 @@ class Note(object):
 
     @property
     def user(self):
-        return self.comments[0].user
+    if len(self.comments) != 0:
+            return self.comments[0].user
+    else: 
+        return ''
 
     @property
     def uid(self):
-        return self.comments[0].uid
+    if len(self.comments) != 0:
+            return self.comments[0].uid
+    else: 
+        return ''
 
     @property
     def timestamp(self):
@@ -80,15 +86,26 @@ def _clear_xml_element(element):
 def parse_notes(notes_dump):
     for event, element in lxml.etree.iterparse(notes_dump, events=('end',),
                                                tag='note', recover=True):
+        if element.attrib.get('closed_at'):
+            yield Note(element)
+        _clear_xml_element(element)
+
+def parse_notes_without_closed(notes_dump):
+    for event, element in lxml.etree.iterparse(notes_dump, events=('end',),
+                                               tag='note', recover=True):
         if not element.attrib.get('closed_at'):
             yield Note(element)
         _clear_xml_element(element)
 
-
 def do():
     stdin = sys.stdin if sys.version_info.major == 2 else sys.stdin.buffer
     stdout = sys.stdout if sys.version_info.major == 2 else sys.stdout.buffer
-    notes = parse_notes(stdin)
+    ## select one of parse functions #######################
+    ## original function
+#    notes = parse_notes(stdin)
+    ## extract all 
+    notes = parse_notes_without_closed(stdin)
+
     for chunk in jinja2.Template(template, autoescape=True).generate(notes=notes):
         stdout.write(chunk.encode('utf8'))
 
