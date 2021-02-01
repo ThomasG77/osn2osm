@@ -21,3 +21,4 @@ You can output open and closed OSM-Notes by switching the parse_notes() setting.
 * DE: Notes Map v2.5. - https://greymiche.lima-city.de/osm_notes/ 
 
 ## References
+* 26.	Seto, T.; Kanasugi, H.; Nishimura, Y. Quality Verification of Volunteered Geographic Information Using OSM Notes Data in a Global Context. ISPRS International Journal of Geo-Information, 9(6):372, 2020.06. https://doi.org/10.3390/ijgi9060372
